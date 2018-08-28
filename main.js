@@ -72,11 +72,15 @@ function youWon(){
     element.appendChild(text);
     element.id = "winDiv"
     rowsWrapper.appendChild(element);
+    document.removeEventListener('keydown', arrowKeyPressed);
 }
 
 createRows();
 changePlayerLocation(0, 0); //game init: sets the playerIcon and mapLocation to the start position
-document.addEventListener('keydown', (event) => {
+
+
+
+let arrowKeyPressed = function(event){
     if (event.key == 'ArrowRight') {
         changePlayerLocation(1,0);
     }
@@ -89,4 +93,6 @@ document.addEventListener('keydown', (event) => {
     if (event.key == 'ArrowUp') {
         changePlayerLocation(0,-1);
     }
-});
+}
+
+document.addEventListener('keydown', arrowKeyPressed);
