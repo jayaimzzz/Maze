@@ -37,12 +37,12 @@ function createCells(row) {
     for (let i = 0; i < map[0].length; i++) {
         let cell = document.createElement('div');
         cell.className = 'cell';
-        cell.style.height = '28px';
-        cell.style.width = '28px';
+        // cell.style.height = '28px';
+        // cell.style.width = '28px';
         cell.id = row.id + "cell" + i;
         map[row.dataset.rowNumber][i] == 'W' ?
-            cell.className = 'wall' :
-            cell.className = 'floor'
+            cell.className = 'wall cell' :
+            cell.className = 'floor cell'
         row.appendChild(cell);
     }
 }
