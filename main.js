@@ -24,8 +24,6 @@ function createRows() {
     for (let i = 0; i < map.length; i++) {
         let row = document.createElement('div');
         row.className = 'row';
-        // row.style.height = '28px';
-        // row.style.width = '588px';
         row.id = 'row' + i;
         row.dataset.rowNumber = i;
         createCells(row);
@@ -37,12 +35,21 @@ function createCells(row) {
     for (let i = 0; i < map[0].length; i++) {
         let cell = document.createElement('div');
         cell.className = 'cell';
-        // cell.style.height = '28px';
-        // cell.style.width = '28px';
         cell.id = row.id + "cell" + i;
-        map[row.dataset.rowNumber][i] == 'W' ?
-            cell.className = 'wall cell' :
-            cell.className = 'floor cell'
+        switch (map[row.dataset.rowNumber][i]) {
+            case 'W':
+                cell.className = 'wall cell';
+                break;
+            case ' ':
+                cell.className = 'floor cell';
+                break;
+            case 'S':
+                cell.className = 'floor cell start';
+                break;
+            case 'F':
+                cell.className = 'floor cell finish';
+                break;
+        }
         row.appendChild(cell);
     }
 }
@@ -52,7 +59,7 @@ function changePlayerLocation(Right, Down) {
     let cellNumber = playerLocation[0] + Right;
     let mapLocation = (map[rowNumber][cellNumber]);
     let direction = whatDirection(Right, Down);
-    if (mapLocation !== 'W') {
+    if (mapLocation !== 'W' && mapLocation !== undefined) {
         playerIcon.style.animationName = "slide" + direction
         let playerLocationDiv = document.getElementById('row' + rowNumber + 'cell' + cellNumber)
         playerLocationDiv.appendChild(playerIcon);
@@ -63,19 +70,23 @@ function changePlayerLocation(Right, Down) {
     }
 }
 
-function whatDirection (Right, Down){
+function whatDirection(Right, Down) {
     let direction = '';
-    if (Right == 1){
-        direction = 'Right';
+    switch (Right) {
+        case 1:
+            direction = 'Right';
+            break;
+        case -1:
+            direction = 'Left';
+            break;
     }
-    if (Right == -1){
-        direction = 'Left';
-    }
-    if (Down == 1){
-        direction = 'Down';
-    }
-    if (Down == -1){
-        direction = 'Up';
+    switch (Down) {
+        case 1:
+            direction = 'Down';
+            break;
+        case -1:
+            direction = 'Up';
+            break;
     }
     return direction;
 }
@@ -93,21 +104,19 @@ createRows();
 changePlayerLocation(0, 0); //game init: sets the playerIcon and mapLocation to the start position
 
 let arrowKeyPressed = function (event) {
-    if (event.key == 'ArrowRight') {
-        // playerIcon.style.animationName = "slideRight";
-        changePlayerLocation(1, 0);
-    }
-    if (event.key == 'ArrowLeft') {
-        // playerIcon.style.animationName = "slideLeft";
-        changePlayerLocation(-1, 0);
-    }
-    if (event.key == 'ArrowDown') {
-        // playerIcon.style.animationName = "slideDown";
-        changePlayerLocation(0, 1);
-    }
-    if (event.key == 'ArrowUp') {
-        // playerIcon.style.animationName = "slideUp";
-        changePlayerLocation(0, -1);
+    switch (event.key) {
+        case 'ArrowRight':
+            changePlayerLocation(1, 0);
+            break;
+        case 'ArrowLeft':
+            changePlayerLocation(-1, 0);
+            break;
+        case 'ArrowDown':
+            changePlayerLocation(0, 1);
+            break;
+        case 'ArrowUp':
+            changePlayerLocation(0, -1);
+            break;
     }
 }
 
